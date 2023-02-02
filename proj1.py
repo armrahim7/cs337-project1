@@ -46,9 +46,6 @@ def get_host(tweets):
         #if there is a match, separate the part that becomes before the 'host' word
         if (win != None):
             str = win.group(1)
-            #skip rt phrases
-            if("rt" in str):
-                continue
             #use spacy named-entity recognition
             doc = nlp(str)
             for i in doc.ents:
@@ -57,7 +54,7 @@ def get_host(tweets):
     possible_set = set(possible_candidates)
     final_candidates = []
     for c in possible_set:
-        if((possible_candidates.count(c)/len(possible_candidates)) >= 0.15):
+        if((possible_candidates.count(c)/len(possible_candidates)) >= 0.1):
             final_candidates.append(c)
     return final_candidates
 data = load_data()
