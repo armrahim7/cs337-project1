@@ -9,7 +9,7 @@ def load_data():
     tweets = json.load(data)
     return tweets
 
-
+#ignore, still broken
 def get_winners(tweets):
     banned_words = ['golden', 'globes', 'rt', 'goldenglobes']
     res = []
@@ -61,6 +61,6 @@ def get_host(tweets):
             final_candidates.append(c)
     return final_candidates
 data = load_data()
-print(get_winners(data))
+print(get_host(data))
 
 
