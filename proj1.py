@@ -1,38 +1,17 @@
 import re
 import json
 import nltk
+nltk.download('vader_lexicon')
 import spacy
 nlp = spacy.load('en_core_web_lg')
+from nltk.sentiment import SentimentIntensityAnalyzer
+sia = SentimentIntensityAnalyzer()
+
 
 def load_data():
     data = open('gg2013.json')
     tweets = json.load(data)
     return tweets
-
-#ignore, still broken
-def get_winners(tweets):
-    banned_words = ['golden', 'globes', 'rt', 'goldenglobes']
-    res = []
-    dict = {}
-    for tweet in tweets:
-        txt = tweet['text']
-        txt = txt.lower()
-        txt = re.sub(r'[^\w\s]', '', txt)
-        win = re.search(r'(.*) (wins|won) best (.*)', txt)
-        if (win != None):
-            str = win.group(1)
-            split_str = str.split()
-            str2 = win.group(3)
-            split_str2 = str2.split()
-            prev = split_str2[0]
-            if prev not in banned_words:
-                res.append(prev)
-            for i in range(1, len(split_str2)):
-                if((prev not in banned_words) and (split_str2[i] not in banned_words)):
-                    res.append(prev + ' ' + split_str2[i])
-                    prev = prev + ' ' + split_str2[i]
-    win_set = set(res)
-    return sorted(win_set, key = res.count)
 
 def get_host(tweets):
     possible_candidates = []
@@ -57,7 +36,49 @@ def get_host(tweets):
         if((possible_candidates.count(c)/len(possible_candidates)) >= 0.1):
             final_candidates.append(c)
     return final_candidates
+def best_and_worst_dressed(tweets):
+    #Look for tweets using these words
+    fashion_words = ["outfit", "dress", "suit", "fit", "style", "clothes", "shirt", "pants"]
+    best = []
+    worst = []
+    fashion_tweets = []
+    for tweet in tweets:
+        #Clean up tweets
+        txt = tweet['text']
+        txt = txt.lower()
+        txt = re.sub(r'[^\w\s]', '', txt)
+        txt = re.sub(r'goldenglobes', '', txt)
+        txt = re.sub(r'[G|g]olden [G|g]lobes', '', txt)
+        #Filters tweets based on if tweet uses fashion words
+        for f in fashion_words:
+            if (f in txt):
+                fashion_tweets.append(txt)
+    #Some more cleaning up (remove retweets)
+    fashion_tweets = [x for x in fashion_tweets if not (x.startswith('rt'))]
+    #Check sentiments on fashion tweets
+    for ftweet in fashion_tweets:
+        sents = sia.polarity_scores(ftweet)
+        if (sents['compound'] > 0):
+            doc = nlp(ftweet)
+            for i in doc.ents:
+                #Filters only people strings out
+                if (i.label_ == 'PERSON'):
+                    best.append(i.text)
+        elif (sents['compound'] < 0):
+            doc = nlp(ftweet)
+            for i in doc.ents:
+                #Filters only people strings out
+                if (i.label_ == 'PERSON'):
+                    worst.append(i.text)
+    #Returns the person with the most positive-leaning fashion-related tweets and person
+    #with most negative-leaning fashion-related tweets
+    return ('best dressed:' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count))
+
+
+
+
 data = load_data()
+print(best_and_worst_dressed(data))
 print(get_host(data))
 
 
