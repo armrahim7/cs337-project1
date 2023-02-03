@@ -3,3 +3,5 @@ setuptools
 wheel
 spacy
 nltk
+pandas
+beautifulsoup4
