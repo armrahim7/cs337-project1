@@ -38,7 +38,7 @@ def get_host(tweets):
     return final_candidates
 def best_and_worst_dressed(tweets):
     #Look for tweets using these words
-    fashion_words = ["outfit", "dress", "suit", "fit", "style", "clothes", "shirt", "pants"]
+    fashion_words = ["outfit", "dress", "suit", "fit", "style", "clothes", "shirt", "pants", "dressed", "fashion"]
     best = []
     worst = []
     fashion_tweets = []
