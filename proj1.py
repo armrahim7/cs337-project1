@@ -73,12 +73,30 @@ def best_and_worst_dressed(tweets):
     #Returns the person with the most positive-leaning fashion-related tweets and person
     #with most negative-leaning fashion-related tweets
     return ('best dressed:' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count))
+def host_sentiment(hosts, tweets):
+    compound_score = 0
+    for tweet in tweets:
+        txt = tweet['text']
+        for h in hosts:
+            if h in txt:
+                sents = sia.polarity_scores(txt)
+                compound_score += sents['compound']
+    if (compound_score > 0):
+        sentiment = 'Positive'
+    elif (compound_score < 0):
+        sentiment = 'Negative'
+    else:
+        sentiment = 'Neutral'
+    return 'Overall Host(s) Sentiment: ' + sentiment + "\n" + 'Overall Compound Score: ' + str(compound_score)
+
 
 
 
 
 data = load_data()
 print(best_and_worst_dressed(data))
-print(get_host(data))
+hosts = get_host(data)
+print(hosts)
+print(host_sentiment(hosts,data))
 
 
