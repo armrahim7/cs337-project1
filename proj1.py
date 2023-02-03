@@ -89,10 +89,6 @@ def host_sentiment(hosts, tweets):
         sentiment = 'Neutral'
     return 'Overall Host(s) Sentiment: ' + sentiment + "\n" + 'Overall Compound Score: ' + str(compound_score)
 
-
-
-
-
 data = load_data()
 print(best_and_worst_dressed(data))
 hosts = get_host(data)
