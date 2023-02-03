@@ -16,6 +16,9 @@ import pandas as pd
 # movie_df= pd.read_csv('movie.basics.tsv',sep = '\t')
 # movie_df = movie_df.drop(movie_df.colums[0,1,3,4,7], axis=1)
 
+#filter out all actors and mvoies that prior to 2006
+
+
 Genres=['Hey','Cany','You','Stop']
 Movie_Descriptors=[]
 Roles=[]
@@ -36,6 +39,7 @@ def create_award_re():
     
     print(f'({gen})')
 
+# award_re structure r' (best)?(performace)?(descriptive type())?(actor/movie noun)(movie descritper)?(genres)?
 
 #create_award_re()
 
@@ -72,7 +76,6 @@ random= ['Sound','Writing (Original ScreenPlay','Makeup and Hairstyling']
 
 
 
-#print(type_checker(test,['person']))
 
 
 
@@ -87,37 +90,47 @@ tweets = json.load(z)
 
 x=0
 awards={}
+char_ignore=['@']
 def find_awards():
     for tweet in tweets:
         twt1= re.split('[!.?]',tweet['text'])
         twt=twt1[0]
         win_re =re.search(r'(.*) (wins|won) (.*)', twt.lower())
         nominee_re= re.search(r'(.*) (nominee|nominated) (.*)', twt.lower())
-        award_re = re.findall(r'Best (Performance By An )?(Actor|Actress|Motion Picture|Song|Film|Director|Producer|Screenplay|Score|Movie) (In A)?(Motion Picture|Television|Series|T.V.|Series)?(Drama|Musical or Comedy)?', twt.title())
+        award_re = re.findall(r'best (performance by an )?(actor|actress|motion picture|song|film|director|producer|screenplay|score|movie) (in a)?(motion picture|television|series|t.v.|series)?(drama|musical or comedy)?', twt.lower())
         eval= [win_re,nominee_re]
         #filtering for a tweet that meets one of the regular expression
+ 
         if award_re != []:
             names=[]
             #award_re[0][1]
-            text= NER(twt.title())
+            text= NER(twt.lower())
             for awrd in award_re:
-                awrd = "Best "+" ".join(awrd)
+
+                awrd = "best "+" ".join(awrd)
                 if awrd in awards:
                     awards[awrd][1] += 1
                 else:
-                    awards[awrd] = [None,0]
+                    awards[awrd] = [None,0,None]
     #finding any mention of people within the texts matching reg_ex
                 for str in text.ents:
                     #modify to get part of speech tagging
-                    if str.label_ == 'PERSON' :
+                    if str.label_ == 'PERSON'  and '@' not in str.text :
                         #type checker here, based on the current award in place
                         names.append(str.text)
 
+
                         if awards[awrd][0] == None:
-                            #
-                            awards[awrd][0] = set(names)
-                        else:
-                            awards[awrd][0].update(names)
+                            awards[awrd][0]= set()
+                            awards[awrd][2]=[]
+                        for person in names:
+                            if person.title() not in awards[awrd][0]:
+                                awards[awrd][0].add(person.title())
+                                awards[awrd][2].append(0)
+                            else:
+                                temp= list(awards[awrd][0])
+                                awards[awrd][2][temp.index(person.title())] += 1
+
   
     #finding any mention of people within the texts matching reg_ex
         if any(eval):
@@ -135,10 +148,6 @@ def find_awards():
 
 
 
-#find_awards():     
+find_awards()
 awards = {k:v for k,v in awards.items() if v[1]>10}
 print(awards)
-
-#movie = GetMovie(api_key='your api key')
-
-#flags=re.IGNORECASE
