@@ -11,8 +11,10 @@ def load_data():
 def get_nominees(tweets):
     candidates = dict()
     people_words = ['actor', 'actress']
-    awards = [['supporting'],['motion', 'drama'], ['motion', 'musical', 'comedy']]
+    awards = [['supporting', 'motion'],['motion', 'drama'], ['motion', 'musical', 'comedy'],['television', 'drama'],
+    ['television', 'musical', 'comedy'], ['television', 'miniseries'], ['supporting', 'television']]
     award_cands = dict()
+    retweet_combinations = [' rt ', 'rt ', ' rt']
     for p in people_words:
         for a in awards:
             award_cands[p + ' ' + ' '.join(a)] = []
@@ -32,20 +34,14 @@ def get_nominees(tweets):
                     if p in txt:
                         doc = nlp(txt)
                         for i in doc.ents:
+                            if(i.text.startswith('http') or any([x in i.text for x in retweet_combinations])):
+                                continue
                             if (i.label_ == 'PERSON'):
                                 award_cands[p + ' ' + ' '.join(a)].append(i.text)
     final_award_cands = dict()
     for award in award_cands:
-        merge_set(award_cands[award])
-        award_set = set(award_cands[award])
-        sort_set = sorted(award_set, key = award_cands[award].count, reverse=True)
-        final_award_cands[award] = sort_set[:7]
+        final_award_cands[award] = max(set(award_cands[award]), key = award_cands[award].count)
     return final_award_cands
-def merge_set(candidates):
-    top_candidate = max(set(candidates), key = candidates.count)
-    for cand in candidates:
-        if (any([x in cand for x in top_candidate])):
-            candidates[candidates.index(cand)] = top_candidate
 
 data = load_data()
 print(get_nominees(data))
