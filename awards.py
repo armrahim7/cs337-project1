@@ -36,6 +36,7 @@ def get_awards(tweets):
             final_award_cands.append(a)
     return final_award_cands
 
+
 data = load_data()
 awards = get_awards(data)
 print(awards)
