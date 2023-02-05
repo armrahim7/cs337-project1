@@ -4,8 +4,9 @@ import nltk
 import spacy
 nlp = spacy.load('en_core_web_lg')
 
-def load_data():
-    data = open('gg2013.json')
+def load_data(year):
+    name = f'gg{year}.json'
+    data = open(name)
     tweets = json.load(data)
     return tweets
 
@@ -37,6 +38,6 @@ def get_awards(tweets):
     return final_award_cands
 
 
-# data = load_data()
+# data = load_data(2013)
 # awards = get_awards(data)
 # print(awards)
