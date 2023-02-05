@@ -13,7 +13,7 @@ def load_data(year):
 def get_awards(tweets):
     award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song', 'screenplay']
     award_cands = []
-    useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes']
+    useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes', 'her', 'his', 'their']
     for tweet in tweets:
         txt = tweet['text']
         txt = txt.lower()
@@ -37,7 +37,7 @@ def get_awards(tweets):
                 misc_award = misc.group(1)
                 if(any([x in misc_award for x in useless_words])):
                     continue
-                award_cands.append(misc_award)
+                award_cands.append(misc_award + ' award')
     award_set = (set(award_cands))
     final_award_cands = []
     for a in award_set:
