@@ -7,15 +7,17 @@ nlp = spacy.load('en_core_web_lg')
 def load_data(year):
     name = f'gg{year}.json'
     data = open(name)
-    tweets = json.load(data)
+    tweets_data = json.load(data)
+    tweets = []
+    for tweet in tweets_data:
+        tweets.append(tweet['text'])
     return tweets
 
 def get_awards(tweets):
     award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song', 'screenplay']
     award_cands = []
     useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes', 'her', 'his', 'their']
-    for tweet in tweets:
-        txt = tweet['text']
+    for txt in tweets:
         txt = txt.lower()
         txt = re.sub(r'/', ' ', txt)
         txt = re.sub(r'[^\w\s]', '', txt)
@@ -28,7 +30,7 @@ def get_awards(tweets):
                 if(any([x in cand for x in useless_words])):
                     continue
                 if(any([x in cand for x in award_words])):
-                    award_cands.append(cand)
+                    award_cands.append('best ' + cand)
         reg2 = re.search(r'(.*) award',txt)
         if(reg2):
             str2 = reg2.group(1)
@@ -42,11 +44,10 @@ def get_awards(tweets):
     final_award_cands = []
     for a in award_set:
         if award_cands.count(a) > 4:
-            # final_award_cands.append('best ' + a)
             final_award_cands.append(a)
     return final_award_cands
 
 
-data = load_data(2013)
-awards = get_awards(data)
-print(awards)
+# data = load_data(2013)
+# awards = get_awards(data)
+# print(awards)
