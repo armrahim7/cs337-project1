@@ -39,7 +39,7 @@ def list_of_nominees(tweets):
 def get_nominees(awards, nominees, tweets):
     award_cands = dict()
     award_names = []
-    people_words = ['actor', 'actress', 'director','score', 'screenplay']
+    people_words = ['actor', 'actress', 'director','score', 'screenplay', 'award']
     for a in awards:
         award_names.append(a.split())
         award_cands['best ' + ' '.join(a.split())] = []
@@ -62,9 +62,7 @@ def get_nominees(awards, nominees, tweets):
                         if (i.label_ == 'PERSON') and (i.text in nominees):
                             award_cands['best ' + ' '.join(a)].append(i.text)
                 else:
-                    award_cands['best ' + ' '.join(a)].append('movie')
-                    
-                        
+                    award_cands['best ' + ' '.join(a)].append('movie')                
     final_award_cands = dict()
     for award in award_cands:
         final_award_cands[award] = []
@@ -73,6 +71,35 @@ def get_nominees(awards, nominees, tweets):
             if award_cands[award].count(a) > 1:
                 final_award_cands[award].append(a)
     return final_award_cands
+
+def get_winners(awards, tweets):
+    winners = dict()
+    award_names = []
+    for a in awards:
+        award_names.append(a.split())
+        winners['best ' + ' '.join(a.split())] = []
+    for tweet in tweets:
+        txt = tweet['text']
+        txt = txt.lower()
+        txt = re.sub(f'[^\w\s]', '', txt)
+        for a in award_names:
+            if 'cecil' in a:
+                winners['best ' + ' '.join(a)].append('placeholder')
+                continue
+            if(all(x in txt for x in a)):
+                win = re.search(r'(.*) wins best', txt)
+                if(win):
+                    winner = win.group(1)
+                    winners['best ' + ' '.join(a)].append(winner)
+    final_winners = dict()
+    for award in winners:
+        winner_set = set(winners[award])
+        if (len(winner_set)>0):
+            final_winners[award] = max(winner_set, key = winners[award].count)
+        else:
+            final_winners[award] = 'placeholder'
+    return final_winners
+
 
 def check_if_movie(word):
     word = word.split()
@@ -90,6 +117,7 @@ def check_if_movie(word):
 
 data = load_data(2013)
 awards = get_awards(data)
-nominees = list_of_nominees(data)
-print(get_nominees(awards, nominees, data))
+# nominees = list_of_nominees(data)
+# print(get_nominees(awards, nominees, data))
+print(get_winners(awards, data))
 
