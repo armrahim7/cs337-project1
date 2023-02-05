@@ -8,6 +8,7 @@ from spacy import displacy
 import pandas as pd
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
+from awards import get_awards, load_data
 
 f = open('gg2013.json')
 tweet_data = json.load(f)
@@ -106,8 +107,10 @@ for i in tweet_data:
 #        print("The nominees of ", a["award"], " are ", a["nominees"], "!")
 
 # sample of awards
-awards = ["best actress - motion picture - drama", "best actor - motion picture - drama", "best actress - motion picture - musical/comedy", 
-"best actor - motion picture - musical/comedy", "best supporting actress", "best supporting actor", "best director"]
+# awards = ["best actress - motion picture - drama", "best actor - motion picture - drama", "best actress - motion picture - musical/comedy", 
+# "best actor - motion picture - musical/comedy", "best supporting actress", "best supporting actor", "best director"]
+new_data = load_data(2013)
+awards = get_awards(new_data)
 
 # sorts list of ["name", count] by lowest count first
 def min_appearances(ele):
@@ -153,7 +156,7 @@ def remove_count(ele):
 # does not work with movies yet
 nominees = []
 def get_nominees(tweets):
-    output = []
+    output = dict()
     for a in awards:
         award_re = re.sub(r'/', ' ', a)
         award_re = re.sub(r'[^\w\s]', '', award_re)
@@ -206,7 +209,7 @@ def get_nominees(tweets):
         # remove count (not necessary during testing)
         limited_nominees = remove_count(limited_nominees)
         # append pair of award and nominees to the output
-        output.append([a, limited_nominees])
+        output[a] = limited_nominees
     # eventually will have to change the form of the output to fit the dictionary requested
     return output
 
