@@ -8,8 +8,9 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 
 
-def load_data():
-    data = open('gg2013.json')
+def load_data(year):
+    name = f'gg{year}.json'
+    data = open(name)
     tweets = json.load(data)
     return tweets
 
@@ -89,7 +90,7 @@ def host_sentiment(hosts, tweets):
         sentiment = 'Neutral'
     return 'Overall Host(s) Sentiment: ' + sentiment + "\n" + 'Overall Compound Score: ' + str(compound_score)
 
-data = load_data()
+data = load_data(2013)
 print(best_and_worst_dressed(data))
 hosts = get_host(data)
 print(hosts)
