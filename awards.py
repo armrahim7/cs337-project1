@@ -29,6 +29,15 @@ def get_awards(tweets):
                     continue
                 if(any([x in cand for x in award_words])):
                     award_cands.append(cand)
+        reg2 = re.search(r'(.*) award',txt)
+        if(reg2):
+            str2 = reg2.group(1)
+            misc = re.search(r'receives? (.*)', str2)
+            if(misc):
+                misc_award = misc.group(1)
+                if(any([x in misc_award for x in useless_words])):
+                    continue
+                award_cands.append(misc_award)
     award_set = (set(award_cands))
     final_award_cands = []
     for a in award_set:
@@ -38,6 +47,6 @@ def get_awards(tweets):
     return final_award_cands
 
 
-# data = load_data(2013)
-# awards = get_awards(data)
-# print(awards)
+data = load_data(2013)
+awards = get_awards(data)
+print(awards)
