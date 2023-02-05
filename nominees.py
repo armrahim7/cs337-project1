@@ -10,8 +10,9 @@ ia = imdb.IMDb()
 from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 
-def load_data():
-    data = open('gg2013.json')
+def load_data(year):
+    name = f'gg{year}.json'
+    data = open(name)
     tweets = json.load(data)
     return tweets
 def list_of_nominees(tweets):
@@ -87,7 +88,7 @@ def check_if_movie(word):
                 return True
     return False
 
-data = load_data()
+data = load_data(2013)
 awards = get_awards(data)
 nominees = list_of_nominees(data)
 print(get_nominees(awards, nominees, data))
