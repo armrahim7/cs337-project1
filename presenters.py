@@ -12,8 +12,7 @@ def load_data():
 
 def list_of_presenters(tweets):
     cands = []
-    present_words = ['present ', 'presents', 'presented', 'presenter', 'presenters', 'presenting']
-    useless_words = [' rt ', 'rt ', ' rt', 'http']
+    useless_words = [' rt ', 'rt ', ' rt']
     for tweet in tweets:
         txt = tweet['text']
         txt = txt.lower()
@@ -31,6 +30,7 @@ def list_of_presenters(tweets):
                     continue
                 if (i.label_ == 'PERSON'):
                     cands.append(i.text)
+    print(set(cands))
     return set(cands)
 def get_presenters(awards, presenters, tweets):
     cands = dict()
