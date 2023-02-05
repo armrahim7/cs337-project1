@@ -10,7 +10,7 @@ def load_data():
     return tweets
 
 def get_awards(tweets):
-    award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song']
+    award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song', 'screenplay']
     award_cands = []
     useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes']
     for tweet in tweets:
