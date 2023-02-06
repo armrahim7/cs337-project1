@@ -14,6 +14,16 @@ NER = spacy.load("en_core_web_sm")
 nominees_per_award = 5
 award_count = 26
 
+# loads the text of tweets given a year into a list
+def load_data(year):
+    name = f'gg{year}.json'
+    data = open(name)
+    tweets_data = json.load(data)
+    tweets = []
+    for tweet in tweets_data:
+        tweets.append(tweet['text'])
+    return tweets
+
 # sorts list of ["name", count] by lowest count first
 def min_appearances(ele):
     return ele[1]
@@ -104,6 +114,7 @@ def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
+    data = load_data(year)
     award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song', 'screenplay']
     award_cands = []
     useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes', 'her', 'his', 'their']
@@ -212,6 +223,7 @@ def get_winner(year):
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+    data = load_data(year)
     winners = {}
     for a in OFFICIAL_AWARDS_1315:
         # remove punctuation from award name
@@ -279,6 +291,7 @@ def get_presenters(year):
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
     # Your code here
+    data = load_data(year)
     cands = dict()
     award_names = []
     useless_words = [' rt ', 'rt ', ' rt']
