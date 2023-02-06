@@ -3,15 +3,7 @@ import json
 import nltk
 import spacy
 nlp = spacy.load('en_core_web_lg')
-
-def load_data(year):
-    name = f'gg{year}.json'
-    data = open(name)
-    tweets_data = json.load(data)
-    tweets = []
-    for tweet in tweets_data:
-        tweets.append(tweet['text'])
-    return tweets
+from load_data import load_data
 
 def get_awards(tweets):
     award_words = ['movie', 'motion', 'picture', 'series', 'television', 'tv', 'film', 'score', 'song', 'screenplay']
