@@ -7,7 +7,6 @@ import nltk
 import spacy
 from spacy import displacy
 import pandas as pd
-from load_data import load_data
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
 
@@ -155,7 +154,7 @@ def get_nominees(year):
     # Your code here
     data = load_data(year)
     for i in data:
-        data.append(i["text"].lower())
+        i.lower()
     nominees = {}
     for a in OFFICIAL_AWARDS_1315:
         # remove punctuation from award name
@@ -336,6 +335,19 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
+    output = {}
+    output["hosts"] = get_hosts(2013)
+    nominees = get_nominees(2013)
+    winners = get_winner(2013)
+    presenters = get_presenters(2013)
+    output["award_data"] = {}
+    for a in OFFICIAL_AWARDS_1315:
+        output["award_data"][a] = {}
+        output["award_data"][a]["presenters"] = presenters[a]
+        output["award_data"][a]["nominees"] = nominees[a]
+        output["award_data"][a]["winner"] = winners[a]
+    with open ('data.json', 'w') as f:
+        json.dump(output, f)
     return
 
 if __name__ == '__main__':
