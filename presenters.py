@@ -3,15 +3,7 @@ import json
 import spacy
 nlp = spacy.load('en_core_web_lg')
 from awards import get_awards
-
-def load_data(year):
-    name = f'gg{year}.json'
-    data = open(name)
-    tweets_data = json.load(data)
-    tweets = []
-    for tweet in tweets_data:
-        tweets.append(tweet['text'])
-    return tweets
+from load_data import load_data
 
 def get_presenters(awards, tweets):
     cands = dict()
