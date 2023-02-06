@@ -8,7 +8,8 @@ from spacy import displacy
 import pandas as pd
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
-from awards import get_awards, load_data
+from awards import get_awards
+from load_data import load_data
 
 f = open('gg2013.json')
 tweet_data = json.load(f)
