@@ -6,19 +6,12 @@ import spacy
 nlp = spacy.load('en_core_web_lg')
 from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
-
-
-def load_data(year):
-    name = f'gg{year}.json'
-    data = open(name)
-    tweets = json.load(data)
-    return tweets
+from load_data import load_data
 
 def get_host(tweets):
     possible_candidates = []
-    for tweet in tweets:
+    for txt in tweets:
         #clean tweet
-        txt = tweet['text']
         txt = txt.lower()
         txt = re.sub(r'[^\w\s]', '', txt)
         #regex to get part of sentence before the words host/hosts/hosted
@@ -43,9 +36,8 @@ def best_and_worst_dressed(tweets):
     best = []
     worst = []
     fashion_tweets = []
-    for tweet in tweets:
+    for txt in tweets:
         #Clean up tweets
-        txt = tweet['text']
         txt = txt.lower()
         txt = re.sub(r'[^\w\s]', '', txt)
         txt = re.sub(r'goldenglobes', '', txt)
@@ -76,8 +68,7 @@ def best_and_worst_dressed(tweets):
     return ['best dressed: ' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count)]
 def host_sentiment(hosts, tweets):
     compound_score = 0
-    for tweet in tweets:
-        txt = tweet['text']
+    for txt in tweets:
         for h in hosts:
             if h in txt:
                 sents = sia.polarity_scores(txt)
