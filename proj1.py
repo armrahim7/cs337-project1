@@ -36,7 +36,7 @@ def get_host(tweets):
     for c in possible_set:
         if((possible_candidates.count(c)/len(possible_candidates)) >= 0.1):
             final_candidates.append(c)
-    return final_candidates
+    return join_hosts(final_candidates)
 def best_and_worst_dressed(tweets):
     #Look for tweets using these words
     fashion_words = ["outfit", "dress", "suit", "fit", "style", "clothes", "shirt", "pants", "dressed", "fashion"]
@@ -73,7 +73,7 @@ def best_and_worst_dressed(tweets):
                     worst.append(i.text)
     #Returns the person with the most positive-leaning fashion-related tweets and person
     #with most negative-leaning fashion-related tweets
-    return ('best dressed:' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count))
+    return ['best dressed: ' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count)]
 def host_sentiment(hosts, tweets):
     compound_score = 0
     for tweet in tweets:
@@ -89,6 +89,16 @@ def host_sentiment(hosts, tweets):
     else:
         sentiment = 'Neutral'
     return 'Overall Host(s) Sentiment: ' + sentiment + "\n" + 'Overall Compound Score: ' + str(compound_score)
+def join_hosts(hosts):
+    output = []
+    for i in hosts:
+        curr = i
+        for j in hosts:
+            if curr in j and curr is not j:
+                curr = "none"
+        if curr != "none":
+            output.append(curr)
+    return output
 
 data = load_data(2013)
 print(best_and_worst_dressed(data))
