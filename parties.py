@@ -15,10 +15,9 @@ tweets = json.load(z)
 NER = spacy.load("en_core_web_sm")
 
 
-
-def find_parties(twts):
+def find_parties(tweets):
     parties={}
-    for twt in twts:
+    for twt in tweets:
         party_re= re.search(r'(.*)(party|parties)(.*)',twt.lower())
         if party_re != None: 
             ppl=NER(twt)
@@ -31,20 +30,18 @@ def find_parties(twts):
                         else:
                             parties[i.text][0]+= 1
                             parties[i.text][1] = (parties[i.text][1] +pos_rating)/parties[i.text][0]
-     return parties
-                                                                                                
-   
+    return parties
+
 
 def best_party():
-    find_parties()
+    find_parties
     best=max(parties, key=parties.get)
-
     if parties[best][1]> 0:
         sentiment= 'loved it!'
     else:
         sentiment= 'hated it!'
 
-    return f'The most talked about party was thrown by {best} and people {sentiment}'
+    return f'Most Talked About party was thrown by {best} and people {sentiment}'
 
 #best_party()
 
