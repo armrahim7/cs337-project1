@@ -7,6 +7,9 @@ import nltk
 import spacy
 from spacy import displacy
 import pandas as pd
+nltk.download('vader_lexicon')
+from nltk.sentiment import SentimentIntensityAnalyzer
+sia = SentimentIntensityAnalyzer()
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
 
@@ -67,7 +70,7 @@ def remove_misses(ele):
     for i in ele:
         if i[0] != "none":
             j = i[0].split()
-            if "rt" not in j and "eonline" not in j and "http" not in j and "rteonline" not in j:
+            if "rt" not in j and "eonline" not in j and "http" not in j and "rteonline" not in j and "goldenglobes" not in j:
                 output.append(i)
     return output
 
@@ -77,6 +80,85 @@ def remove_count(ele):
     for i in ele:
         output.append(i[0])
     return output
+
+def best_and_worst_dressed(tweets):
+    #Look for tweets using these words
+    fashion_words = ["outfit", "dress", "suit", "fit", "style", "clothes", "shirt", "pants", "dressed", "fashion"]
+    best = []
+    worst = []
+    fashion_tweets = []
+    for txt in tweets:
+        #Clean up tweets
+        txt = txt.lower()
+        txt = re.sub(r'[^\w\s]', '', txt)
+        txt = re.sub(r'goldenglobes', '', txt)
+        txt = re.sub(r'[G|g]olden [G|g]lobes', '', txt)
+        #Filters tweets based on if tweet uses fashion words
+        for f in fashion_words:
+            if (f in txt):
+                fashion_tweets.append(txt)
+    #Some more cleaning up (remove retweets)
+    fashion_tweets = [x for x in fashion_tweets if not (x.startswith('rt'))]
+    #Check sentiments on fashion tweets
+    for ftweet in fashion_tweets:
+        sents = sia.polarity_scores(ftweet)
+        if (sents['compound'] > 0):
+            doc = nlp(ftweet)
+            for i in doc.ents:
+                #Filters only people strings out
+                if (i.label_ == 'PERSON'):
+                    best.append(i.text)
+        elif (sents['compound'] < 0):
+            doc = nlp(ftweet)
+            for i in doc.ents:
+                #Filters only people strings out
+                if (i.label_ == 'PERSON'):
+                    worst.append(i.text)
+    #Returns the person with the most positive-leaning fashion-related tweets and person
+    #with most negative-leaning fashion-related tweets
+    return ['best dressed: ' + max(set(best), key = best.count), 'worst dressed: ' + max(set(worst), key = worst.count)]
+def host_sentiment(hosts, tweets):
+    compound_score = 0
+    for txt in tweets:
+        for h in hosts:
+            if h in txt:
+                sents = sia.polarity_scores(txt)
+                compound_score += sents['compound']
+    if (compound_score > 0):
+        sentiment = 'Positive'
+    elif (compound_score < 0):
+        sentiment = 'Negative'
+    else:
+        sentiment = 'Neutral'
+    return 'Overall Host(s) Sentiment: ' + sentiment + "\n" + 'Overall Compound Score: ' + str(compound_score)
+
+def find_parties(tweets):
+    parties={}
+    for twt in tweets:
+        party_re= re.search(r'(.*)(party|parties)(.*)',twt.lower())
+        if party_re != None: 
+            ppl=NER(twt)
+            pos_rating=sia.polarity_scores(twt)['compound']
+            for i in ppl.ents:
+                if i.label_ == 'PERSON' or i.label_ == 'ORG':
+                    if 'Globes' not in i.text :
+                        if i.text not in parties:
+                            parties[i.text]=[1,pos_rating]
+                        else:
+                            parties[i.text][0]+= 1
+                            parties[i.text][1] = (parties[i.text][1] +pos_rating)/parties[i.text][0]
+    return parties
+
+
+def best_party():
+    parties = find_parties(load_data(2013))
+    best=max(parties, key=parties.get)
+    if parties[best][1]> 0:
+        sentiment= 'loved it!'
+    else:
+        sentiment= 'hated it!'
+
+    return f'Most Talked About party was thrown by {best} and people {sentiment}'
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
@@ -153,8 +235,6 @@ def get_nominees(year):
     the name of this function or what it returns.'''
     # Your code here
     data = load_data(year)
-    for i in data:
-        i.lower()
     nominees = {}
     for a in OFFICIAL_AWARDS_1315:
         # remove punctuation from award name
@@ -171,6 +251,7 @@ def get_nominees(year):
         # list of potential nominees
         pot_nominees = []
         for t in data:
+            t = t.lower()
             t = re.sub(r'/', ' ', t)
             t = re.sub(r'[^\w\s#]', '', t)
             t = re.sub(r'goldenglobes', '', t)
@@ -239,6 +320,7 @@ def get_winner(year):
         # list of potential nominees
         pot_nominees = []
         for t in data:
+            t = t.lower()
             t = re.sub(r'/', ' ', t)
             t = re.sub(r'[^\w\s#]', '', t)
             t = re.sub(r'goldenglobes', '', t)
@@ -282,7 +364,10 @@ def get_winner(year):
         # remove count (not necessary during testing)
         limited_nominees = remove_count(limited_nominees)
         # append pair of award and nominees to the output
-        winners[a]= limited_nominees[0]
+        if len(limited_nominees) > 0:
+            winners[a] = limited_nominees[0]
+        else:
+            winners[a] = ""
     return winners
 
 def get_presenters(year):
@@ -335,8 +420,10 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
+    tweets = load_data(2013)
     output = {}
-    output["hosts"] = get_hosts(2013)
+    hosts = get_hosts(2013)
+    output["hosts"] = hosts
     nominees = get_nominees(2013)
     winners = get_winner(2013)
     presenters = get_presenters(2013)
@@ -348,6 +435,26 @@ def main():
         output["award_data"][a]["winner"] = winners[a]
     with open ('data.json', 'w') as f:
         json.dump(output, f)
+    host_sent = host_sentiment(hosts, tweets)
+    dressed = best_and_worst_dressed(tweets)
+    parties = best_party()
+    with open ('readable_data.txt', 'w') as g:
+        g.write(host_sent + "\n")
+        for i in dressed:
+            g.write(i + "\n")
+        g.write(parties + "\n")
+        g.write("Hosts: \n")
+        for i in hosts:
+            g.write(i + "\n")
+        for a in OFFICIAL_AWARDS_1315:
+            g.write(a + "\n")
+            g.write("Presenter(s):" + "\n")
+            g.write(', '.join(output["award_data"][a]["presenters"])  + "\n")
+            g.write("Nominees:" + "\n")
+            g.write(', '.join(output["award_data"][a]["nominees"]) + "\n")
+            g.write("Winner:" + "\n")
+            g.write(', '.join(output["award_data"][a]["winner"]) + "\n")
+        #g.write(output)
     return
 
 if __name__ == '__main__':
