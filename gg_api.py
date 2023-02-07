@@ -339,6 +339,8 @@ def get_winner(year):
                 continue
             # if name is found with award, append name to list of potential nominees
             if (all([x in t for x in clean_award_name])):
+                if('supporting' in t and 'supporting' not in clean_award_name):
+                    continue
                 win = re.search(r'(.*) (wins|receive(s|d))', t)
                 if(win):
                     phrase = win.group(1)
@@ -405,6 +407,9 @@ def get_presenters(year):
             award_re = re.sub(r'television', 'tv', award_re)
             award_split = award_re.split()
             award_split = [x for x in award_split if x not in award_useless_words]
+            if (('tv' in award_split or 'score' in award_split) and 'motion' in award_split and 'picture' in award_split):
+                award_split.remove('motion')
+                award_split.remove('picture')
             if(all([x in txt for x in award_split])):
                 pre = re.search(r'(.*) (present(s|ed|er|ers|ing)?|introduc(e|ed|es|ing))', txt)
                 if(pre):
@@ -472,6 +477,7 @@ def main():
         g.write("Our Extracted Award Names: \n")
         for i in our_awards:
             g.write(i + '\n')
+        g.write('\n')
         g.write("Award Data: \n")
         for a in OFFICIAL_AWARDS_1315:
             g.write(a + "\n")
@@ -481,6 +487,7 @@ def main():
             g.write(', '.join(output["award_data"][a]["nominees"]) + "\n")
             g.write("Winner:" + "\n")
             g.write(output["award_data"][a]["winner"] + "\n")
+            g.write('\n')
     return
 
 if __name__ == '__main__':
