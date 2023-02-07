@@ -306,69 +306,81 @@ def get_winner(year):
     # Your code here
     data = load_data(year)
     winners = {}
+    cands = {}
+    useless_words = [' rt ', 'rt ', ' rt', 'http']
+    stop_words = ['wish', 'hope', 'deserves', 'yay', 'woah', 'wow']
+    people_words = ['actor', 'actress', 'director', 'award', 'screenplay', 'score']
+    #array of words not commonly used (or provides no semantic value) in tweets when discussing awards
+    award_useless_words = ['performance', 'by', 'in', 'made', 'for', 'role', 'original', 'an']
     for a in OFFICIAL_AWARDS_1315:
+        winners[a] = []
+        cands[a] = []
         # remove punctuation from award name
         award_re = re.sub(r'/', ' ', a)
         award_re = re.sub(r'[^\w\s]', '', award_re)
         award_re = award_re.lower()
-        award_name = []
-        award_name.append(award_re.split())
-        # remove unhelpful words from award name
-        clean_award_name = []
-        for word in award_name[0]:
-            if word != "in" and word != "or" and word != "a" and word != "an" and word != "performance" and word != "by" and word != "made" and word != "for" and word != "any":
-                clean_award_name.append(word)
+        award_re = re.sub(r'television', 'tv', award_re)
+        award_split = award_re.split()
+        clean_award_name = [x for x in award_split if x not in award_useless_words]
+        # the words 'motion picture' were barely used when discussing tv awards
+        if (('tv' in clean_award_name or 'score' in clean_award_name) and 'motion' in clean_award_name and 'picture' in clean_award_name):
+            clean_award_name.remove('motion')
+            clean_award_name.remove('picture')
         # list of potential nominees
-        pot_nominees = []
         for t in data:
             t = t.lower()
             t = re.sub(r'/', ' ', t)
-            t = re.sub(r'[^\w\s#]', '', t)
+            t = re.sub(r'[^\w\s]', '', t)
             t = re.sub(r'goldenglobes', '', t)
             t = re.sub(r'golden', '', t)
             t = re.sub(r'globe', '', t)
             t = re.sub(r'[G|g]olden [G|g]lobes', '', t)
-            if (t.startswith('rt')):
+            if (t.startswith('rt')) or (any([x in t for x in stop_words])):
                 continue
             # if name is found with award, append name to list of potential nominees
             if (all([x in t for x in clean_award_name])):
-                names = nlp(t)
-                for name in names.ents:
-                    if name.label_ == 'PERSON':
-                        pot_nominees.append(name.text)
-        # list of named entities found paired with how many instances of them were found
-        counted_nominees = []
-        for n in pot_nominees:
-            c = pot_nominees.count(n)
-            counted_nominees.append([n, c])
-        # if named entity was found 250 times, there are 250 instances of ["name", 250] in pot_nominees
-        # remove duplicates
-        single_nominees = []
-        for ele in counted_nominees:
-            if ele not in single_nominees:
-                single_nominees.append(ele)
-        # join same people with slightly different named entity recognition
-        # for example, "tina", "tina fey", "tina f" all same person -- create one entry for all 3
-        joined_nominees = join_names(single_nominees)
-        joined_nominees = remove_misses(joined_nominees)
-        # get the 5 most mentioned people
-        limited_nominees = []
-        for n in joined_nominees:
-            if len(limited_nominees) < nominees_per_award:
-                limited_nominees.append(n)
-            else:
-                limited_nominees.sort(key=min_appearances)
-                if limited_nominees[0][1] < n[1]:
-                    limited_nominees[0] = n
-        # list is in increasing order of most mentioned, so reverse list
-        limited_nominees.reverse()
-        # remove count (not necessary during testing)
-        limited_nominees = remove_count(limited_nominees)
-        # append pair of award and nominees to the output
-        if len(limited_nominees) > 0:
-            winners[a] = limited_nominees[0]
+                win = re.search(r'(.*) (wins|receive(s|d))', t)
+                if(win):
+                    phrase = win.group(1)
+                    if (any([x in t for x in people_words])):
+                        names = nlp(phrase)
+                        for name in names.ents:
+                            if(any([x in name.text for x in useless_words])):
+                                continue
+                            if name.label_ == 'PERSON':
+                                cands[a].append(name.text)
+                    else:
+                        tokens = nlp(phrase)
+                        for token in tokens.noun_chunks:
+                            if(any([x in token.text for x in useless_words])):
+                                continue
+                            #weighs this weak strategy a little bit more for non-people awards
+                            cands[a].append(token.text)
+                            cands[a].append(token.text)
+                win2 = re.search(r'goes to (.*)', t)
+                if(win2):
+                    phrase2 = win2.group(1)
+                    if (any([x in t for x in people_words])):
+                        names2 = nlp(phrase2)
+                        for name in names2.ents:
+                            if(any([x in name.text for x in useless_words])):
+                                continue
+                            if name.label_ == 'PERSON':
+                                cands[a].append(name.text)
+                    else:
+                        tokens = nlp(phrase2)
+                        for token in tokens.noun_chunks:
+                            if(any([x in token.text for x in useless_words])):
+                                continue
+                            if(any([x in token.text for x in clean_award_name])):
+                                continue
+                            cands[a].append(token.text)
+    for award in cands:
+        cands_set = set(cands[award])
+        if len(cands_set) > 0:
+            winners[award] = max(cands_set, key = cands[award].count)
         else:
-            winners[a] = ""
+            winners[award] = ""
     return winners
 
 def get_presenters(year):
@@ -394,7 +406,7 @@ def get_presenters(year):
             award_split = award_re.split()
             award_split = [x for x in award_split if x not in award_useless_words]
             if(all([x in txt for x in award_split])):
-                pre = re.search(r'(.*) (present(s|ed|er|ers|ing)?|introduc(e|es|ed|ing))', txt)
+                pre = re.search(r'(.*) (present(s|ed|er|ers|ing)?|introduc(e|ed|es|ing))', txt)
                 if(pre):
                     phrase = pre.group(1)
                     doc = nlp(phrase)
@@ -406,9 +418,12 @@ def get_presenters(year):
     presenters = dict()
     for award in cands:
         presenters[award] = []
-        award_set = set(cands[award])
-        for a in award_set:
-            presenters[award].append(a)
+        award_set = sorted(set(cands[award]), key = cands[award].count)
+        if len(award_set) < 2:
+            for a in award_set:
+                presenters[award].append(a)
+        else:
+            presenters[award] = award_set[-2:]
     return presenters
 
 def pre_ceremony():
@@ -466,7 +481,6 @@ def main():
             g.write(', '.join(output["award_data"][a]["nominees"]) + "\n")
             g.write("Winner:" + "\n")
             g.write(output["award_data"][a]["winner"] + "\n")
-        #g.write(output)
     return
 
 if __name__ == '__main__':
