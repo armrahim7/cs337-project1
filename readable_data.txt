@@ -7,39 +7,39 @@ Hosts:
 amy poehler
 tina fey
 Our Extracted Award Names: 
-cecil b demille award
-best actress in a tv series drama
-best original song
 best director  motion picture
-best foreign film
-best actor in a motion picture comedy musical
-best tv comedy musical
-best actress in a tv comedy musical
-best supporting actress in a motion picture
-best motion picture drama
-best actress in a motion picture comedy or musical
-best actress in a miniseries tv movie
-best supporting actor motion picture
-best actor in a miniseries tv movie
-best screenplay
-best actor for tv drama
-best motion picture
-best actress in a tv comedy or musical
-best director for motion picture
-best tv series  drama
-best actor in a motion picture drama
-best foreign language film
-best original score
-best supporting actress tv series miniseries or tv movie
-best supporting actor in a tv show miniseries or tv movie
-best actor tv series  comedy or musical
-best miniseries or tv movie
-best actress tv drama
-best supporting actor in tv
 best motion picture comedy or musical
-best supporting actor in a motion picture
+best miniseries or tv movie
+best supporting actress in a motion picture
+best director for motion picture
+best supporting actor in a tv show miniseries or tv movie
+best supporting actress tv series miniseries or tv movie
+best foreign language film
+best actress tv drama
+best actress in a tv comedy musical
+best motion picture drama
+best actress in a miniseries tv movie
 best animated feature film
+best screenplay
+best foreign film
+best supporting actor in tv
+best actress in a tv series drama
+cecil b demille award
+best original song
+best actor in a miniseries tv movie
+best supporting actor motion picture
+best original score
+best actor in a motion picture comedy musical
+best actor in a motion picture drama
 best actress in a motion picture drama
+best motion picture
+best actress in a motion picture comedy or musical
+best actor for tv drama
+best actress in a tv comedy or musical
+best tv comedy musical
+best actor tv series  comedy or musical
+best supporting actor in a motion picture
+best tv series  drama
 Award Data: 
 cecil b. demille award
 Presenter(s):
@@ -50,11 +50,11 @@ Winner:
 jodie
 best motion picture - drama
 Presenter(s):
-longtime georgeclooney friend juliaroberts, julia roberts, clinton, george clooney
+clinton, julia roberts
 Nominees:
 jessica chastain, daniel daylewis, ben affleck, george clooney, benaffleck
 Winner:
-jessica chastain
+argo
 best performance by an actress in a motion picture - drama
 Presenter(s):
 
@@ -75,42 +75,42 @@ dustin hoffman
 Nominees:
 hugh jackman, jennifer lawrence, realhughjackman, les misérables, lesmiserables
 Winner:
-hugh jackman
+les miserables
 best performance by an actress in a motion picture - comedy or musical
 Presenter(s):
 
 Nominees:
 anne hathaway, jennifer d, jennifer lawrance, meryl, jennifer lawrence
 Winner:
-anne hathaway
+jennifer lawrence
 best performance by an actor in a motion picture - comedy or musical
 Presenter(s):
 
 Nominees:
 realhughjackman, hugh jackman
 Winner:
-realhughjackman
+hugh jackman
 best animated feature film
 Presenter(s):
 cohen
 Nominees:
 todayshow, wtf frankenweenie, ontheredcarpet, seja não vi ainda, wreckit ralph
 Winner:
-todayshow
+2013 amour
 best foreign language film
 Presenter(s):
-arnold schwarzenegger, sylvester stallone
+sylvester stallone, arnold schwarzenegger
 Nominees:
 arnold schwarzenegger, de haber ganado, michael hanekes amour, sylvester stallone
 Winner:
-arnold schwarzenegger
+2013 amour
 best performance by an actress in a supporting role in a motion picture
 Presenter(s):
 
 Nominees:
 les misérables lovee her, anne hathaway, maggie smith
 Winner:
-les misérables lovee her
+anne hathaway
 best performance by an actor in a supporting role in a motion picture
 Presenter(s):
 kate hudson, bradley cooper
@@ -138,42 +138,42 @@ Presenter(s):
 Nominees:
 joel zimmerman, mychael dana, mychael danna, michael danna
 Winner:
-joel zimmerman
+mychael danna
 best original song - motion picture
 Presenter(s):
 
 Nominees:
 adele, taylor, paul epworth #, yay rtwsjspeakeasy, woop woop
 Winner:
-adele
+skyfall
 best television series - drama
 Presenter(s):
-nathan fillion, lea michele
+lea michele, nathan fillion
 Nominees:
 lewis lewis_damian, claire danes, damian lewis, yeaay  , el primer de la nit
 Winner:
-lewis lewis_damian
+homeland
 best performance by an actress in a television series - drama
 Presenter(s):
-nathan fillion, lea michele
+lea michele, nathan fillion
 Nominees:
 hattrick wak, w  damien lewis  best, claire danes
 Winner:
-hattrick wak
+claire danes
 best performance by an actor in a television series - drama
 Presenter(s):
 
 Nominees:
 gmanews, damian lewis, el primer de la nit, hugh laurie #, lewis lewis_damian
 Winner:
-gmanews
+damian lewis
 best television series - comedy or musical
 Presenter(s):
 jimmy fallon, jay leno
 Nominees:
 don cheadle, lena dunham, cheadle iamdoncheadle  house, jim parsons, yesnbc iamdoncheadle
 Winner:
-don cheadle
+girls
 best performance by an actress in a television series - comedy or musical
 Presenter(s):
 
@@ -187,14 +187,14 @@ Presenter(s):
 Nominees:
 jim parsons, yesnbc iamdoncheadle, don cheadle, cheadle iamdoncheadle  house
 Winner:
-jim parsons
+don cheadle
 best mini-series or motion picture made for television
 Presenter(s):
 
 Nominees:
 ed harris, kevin costner, lo lleva, maggie smith
 Winner:
-ed harris
+game change
 best performance by an actress in a mini-series or motion picture made for television
 Presenter(s):
 
@@ -208,7 +208,7 @@ Presenter(s):
 Nominees:
 ed harris, kevin costner
 Winner:
-ed harris
+kevin costner
 best performance by an actress in a supporting role in a series, mini-series or motion picture made for television
 Presenter(s):
 
@@ -222,4 +222,4 @@ Presenter(s):
 Nominees:
 
 Winner:
-
+ed harris
