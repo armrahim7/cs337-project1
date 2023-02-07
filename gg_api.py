@@ -427,7 +427,6 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
-    # t1 = time.time()
     tweets = load_data(2013)
     output = {}
     hosts = get_hosts(2013)
@@ -468,8 +467,6 @@ def main():
             g.write("Winner:" + "\n")
             g.write(output["award_data"][a]["winner"] + "\n")
         #g.write(output)
-    # t2 = time.time()
-    print(t2-t1)
     return
 
 if __name__ == '__main__':
