@@ -12,6 +12,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
+import time
 
 nominees_per_award = 5
 award_count = 26
@@ -377,17 +378,23 @@ def get_presenters(year):
     # Your code here
     data = load_data(year)
     cands = dict()
-    award_names = []
     useless_words = [' rt ', 'rt ', ' rt']
-    for award in OFFICIAL_AWARDS_1315:
-        award_names.append(award.split())
-        cands[' '.join(award.split())] = []
+    award_useless_words = ['performance', 'by', 'in', 'made', 'for', 'role', 'original']
+    awards = OFFICIAL_AWARDS_1315
+    for award in awards:
+        cands[award] = []
     for txt in data:
         txt = txt.lower()
         txt = re.sub(r'[^\w\s]', '', txt)
-        for award in award_names:
-            if(all([x in txt for x in award])):
-                pre = re.search(r'(.*)\spresent(s|ed|er|ers|ing)?', txt)
+        for award in awards:
+            award_re = award.lower()
+            award_re = re.sub(r'/', ' ', award_re)
+            award_re = re.sub(r'[^\w\s]', '', award_re)
+            award_re = re.sub(r'television', 'tv', award_re)
+            award_split = award_re.split()
+            award_split = [x for x in award_split if x not in award_useless_words]
+            if(all([x in txt for x in award_split])):
+                pre = re.search(r'(.*) (present(s|ed|er|ers|ing)?|introduc(e|es|ed|ing))', txt)
                 if(pre):
                     phrase = pre.group(1)
                     doc = nlp(phrase)
@@ -395,7 +402,7 @@ def get_presenters(year):
                         if (any([x in i.text for x in useless_words])):
                             continue
                         if (i.label_ == 'PERSON'):
-                            cands[' '.join(award)].append(i.text)
+                            cands[award].append(i.text)
     presenters = dict()
     for award in cands:
         presenters[award] = []
@@ -420,6 +427,7 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
+    # t1 = time.time()
     tweets = load_data(2013)
     output = {}
     hosts = get_hosts(2013)
@@ -427,6 +435,7 @@ def main():
     nominees = get_nominees(2013)
     winners = get_winner(2013)
     presenters = get_presenters(2013)
+    our_awards = get_awards(2013)
     output["award_data"] = {}
     for a in OFFICIAL_AWARDS_1315:
         output["award_data"][a] = {}
@@ -446,6 +455,10 @@ def main():
         g.write("Hosts: \n")
         for i in hosts:
             g.write(i + "\n")
+        g.write("Our Extracted Award Names: \n")
+        for i in our_awards:
+            g.write(i + '\n')
+        g.write("Award Data: \n")
         for a in OFFICIAL_AWARDS_1315:
             g.write(a + "\n")
             g.write("Presenter(s):" + "\n")
@@ -453,8 +466,10 @@ def main():
             g.write("Nominees:" + "\n")
             g.write(', '.join(output["award_data"][a]["nominees"]) + "\n")
             g.write("Winner:" + "\n")
-            g.write(', '.join(output["award_data"][a]["winner"]) + "\n")
+            g.write(output["award_data"][a]["winner"] + "\n")
         #g.write(output)
+    # t2 = time.time()
+    print(t2-t1)
     return
 
 if __name__ == '__main__':
