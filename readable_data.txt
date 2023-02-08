@@ -4,42 +4,41 @@ best dressed: kate hudson
 worst dressed: sienna miller
 Most Talked About party was thrown by HBO and people loved it!
 Hosts: 
-amy poehler
 tina fey
+amy poehler
 Our Extracted Award Names: 
-best original song
-best motion picture drama
-best actress in a tv series drama
-best actor for tv drama
-best actress in a tv comedy or musical
-best actress in a miniseries tv movie
-best actor in a miniseries tv movie
-best supporting actor in a tv show miniseries or tv movie
-best miniseries or tv movie
-best actress in a motion picture drama
-best original score
-best director for motion picture
-best supporting actor in tv
-best actress tv drama
-cecil b demille award
-best tv comedy musical
-best actor in a motion picture comedy musical
-best director  motion picture
-best motion picture comedy or musical
-best supporting actress tv series miniseries or tv movie
-best motion picture
-best supporting actor motion picture
-best screenplay
-best tv series  drama
-best foreign film
-best actress in a tv comedy musical
-best actress in a motion picture comedy or musical
-best animated feature film
+best actress in a mini-series or television motion picture
 best foreign language film
+best miniseries or television motion picture
+best supporting actor in television
+best supporting actress television series miniseries or television motion picture
+best actress in a television series drama
+best actor in a motion picture comedy or musical
+best motion picture comedy or musical
 best supporting actress in a motion picture
+best supporting actor motion picture
+best actress in a motion picture comedy or musical
+best television series - drama
+best motion picture drama
 best actor in a motion picture drama
+best original score
+best supporting actor in a television show miniseries or television motion picture
+best actor for television drama
+best actress in a motion picture drama
+best motion picture
+best actor in a miniseries or television motion picture
+best screenplay
+best animated feature film
+best director for motion picture
+best foreign film
+best actress television drama
+best actor television series - comedy or musical
 best supporting actor in a motion picture
-best actor tv series  comedy or musical
+best television comedy or musical
+cecil b. demille award
+best actress in a television comedy or musical
+best director - motion picture
+best original song
 
 Award Data: 
 cecil b. demille award
@@ -52,7 +51,7 @@ jodie
 
 best motion picture - drama
 Presenter(s):
-longtime georgeclooney friend juliaroberts, julia roberts
+george clooney, julia roberts
 Nominees:
 jessica chastain, daniel daylewis, ben affleck, george clooney, benaffleck
 Winner:
@@ -104,7 +103,7 @@ cohen
 Nominees:
 todayshow, wtf frankenweenie, ontheredcarpet, seja não vi ainda, wreckit ralph
 Winner:
-favorite animated film and disney princess
+gmanews
 
 best foreign language film
 Presenter(s):
@@ -112,7 +111,7 @@ arnold schwarzenegger, sylvester stallone
 Nominees:
 arnold schwarzenegger, de haber ganado, michael hanekes amour, sylvester stallone
 Winner:
- s
+2013 amour
 
 best performance by an actress in a supporting role in a motion picture
 Presenter(s):
@@ -124,7 +123,7 @@ anne hathaway
 
 best performance by an actor in a supporting role in a motion picture
 Presenter(s):
-kate hudson, bradley cooper
+bradley cooper, kate hudson
 Nominees:
 christoph
 Winner:
@@ -164,7 +163,7 @@ skyfall
 
 best television series - drama
 Presenter(s):
-nathan fillion, lea michele
+lea michele, nathan fillion
 Nominees:
 lewis lewis_damian, claire danes, damian lewis, yeaay  , el primer de la nit
 Winner:
@@ -172,7 +171,7 @@ homeland
 
 best performance by an actress in a television series - drama
 Presenter(s):
-nathan fillion, lea michele
+lea michele, nathan fillion
 Nominees:
 hattrick wak, w  damien lewis  best, claire danes
 Winner:
@@ -188,7 +187,7 @@ damian lewis
 
 best television series - comedy or musical
 Presenter(s):
-jay leno, jimmy fallon
+jimmy fallon, jay leno
 Nominees:
 don cheadle, lena dunham, cheadle iamdoncheadle  house, jim parsons, yesnbc iamdoncheadle
 Winner:
