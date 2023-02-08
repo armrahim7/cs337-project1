@@ -202,8 +202,11 @@ def get_awards(year):
     useless_words = [' rt ', 'rt ', ' rt', 'goldenglobes', 'golden', 'globes', 'her', 'his', 'their']
     for txt in data:
         txt = txt.lower()
-        txt = re.sub(r'/', ' ', txt)
-        txt = re.sub(r'[^\w\s]', '', txt)
+        txt = re.sub(r'/', ' or ', txt)
+        txt = re.sub(r'[^\w\s.-]', '', txt)
+        txt = re.sub(r'tv', 'television', txt)
+        txt = re.sub(r't.v.', 'television', txt)
+        txt = re.sub(r'movie', 'motion picture', txt)
         reg = re.search(r'best (.*)', txt)
         if(reg):
             str = reg.group(1)
@@ -447,6 +450,7 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
+    t1 = time.time()
     tweets = load_data(2013)
     output = {}
     hosts = get_hosts(2013)
@@ -488,6 +492,7 @@ def main():
             g.write("Winner:" + "\n")
             g.write(output["award_data"][a]["winner"] + "\n")
             g.write('\n')
+    print(time.time()-t1)
     return
 
 if __name__ == '__main__':
