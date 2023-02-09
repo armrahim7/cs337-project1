@@ -329,7 +329,7 @@ def get_nominees(year):
                     items = ia.search_movie(mov[0])
                     id=items[0].movieID
                     if items != []:
-                        title= items[0]['title']
+                        title= items[0]['title'].lower()
                         year = items[0].get('year')
                         genres= ia.get_movie(id).get('genres')
                         type= ia.get_movie(id).get('kind')
@@ -345,9 +345,9 @@ def get_nominees(year):
                                         good_nominees[done[title]][1] += mov[1]
                         else:
                             if year == 2012 or year == 2011:
-                                if title.lower() not in done:
-                                    good_nominees.append([title.lower(),mov[1]])
-                                    done[title,lower()]= len(good_nominees)-1
+                                if title not in done:
+                                    good_nominees.append([title,mov[1]])
+                                    done[title]= len(good_nominees)-1
                                 else:
                                     good_nominees[done[title]][1] += mov[1]
             good_nominees= remove_count(good_nominees)
