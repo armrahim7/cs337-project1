@@ -4,41 +4,41 @@ best dressed: kate hudson
 worst dressed: sienna miller
 Most Talked About party was thrown by HBO and people loved it!
 Hosts: 
-tina fey
 amy poehler
+tina fey
 Our Extracted Award Names: 
-best actress in a mini-series or television motion picture
-best foreign language film
-best miniseries or television motion picture
-best supporting actor in television
-best supporting actress television series miniseries or television motion picture
-best actress in a television series drama
-best actor in a motion picture comedy or musical
-best motion picture comedy or musical
-best supporting actress in a motion picture
-best supporting actor motion picture
-best actress in a motion picture comedy or musical
-best television series - drama
-best motion picture drama
-best actor in a motion picture drama
-best original score
-best supporting actor in a television show miniseries or television motion picture
-best actor for television drama
-best actress in a motion picture drama
-best motion picture
-best actor in a miniseries or television motion picture
-best screenplay
-best animated feature film
-best director for motion picture
-best foreign film
 best actress television drama
-best actor television series - comedy or musical
-best supporting actor in a motion picture
-best television comedy or musical
+best actress in a motion picture comedy or musical
+best supporting actor motion picture
 cecil b. demille award
-best actress in a television comedy or musical
-best director - motion picture
+best actress in a television series drama
 best original song
+best actress in a motion picture drama
+best actor in a motion picture drama
+best actor in a miniseries or television motion picture
+best actress in a mini-series or television motion picture
+best original score
+best foreign language film
+best supporting actor in television
+best television comedy or musical
+best television series - drama
+best supporting actor in a television show miniseries or television motion picture
+best actress in a television comedy or musical
+best motion picture drama
+best screenplay
+best actor television series - comedy or musical
+best miniseries or television motion picture
+best actor for television drama
+best animated feature film
+best actor in a motion picture comedy or musical
+best supporting actor in a motion picture
+best director for motion picture
+best supporting actress television series miniseries or television motion picture
+best motion picture
+best director - motion picture
+best foreign film
+best supporting actress in a motion picture
+best motion picture comedy or musical
 
 Award Data: 
 cecil b. demille award
@@ -51,9 +51,9 @@ jodie
 
 best motion picture - drama
 Presenter(s):
-george clooney, julia roberts
+longtime georgeclooney friend juliaroberts, julia roberts
 Nominees:
-jessica chastain, daniel daylewis, ben affleck, george clooney, benaffleck
+argo, lincoln, zero dark thirty, les misérables, hatfields & mccoys, django unchained
 Winner:
 argo
 
@@ -77,7 +77,7 @@ best motion picture - comedy or musical
 Presenter(s):
 dustin hoffman
 Nominees:
-hugh jackman, jennifer lawrence, realhughjackman, les misérables, lesmiserables
+les misérables
 Winner:
 les miserables
 
@@ -101,17 +101,17 @@ best animated feature film
 Presenter(s):
 cohen
 Nominees:
-todayshow, wtf frankenweenie, ontheredcarpet, seja não vi ainda, wreckit ralph
+brave
 Winner:
-gmanews
+ s
 
 best foreign language film
 Presenter(s):
-arnold schwarzenegger, sylvester stallone
+sylvester stallone, arnold schwarzenegger
 Nominees:
-arnold schwarzenegger, de haber ganado, michael hanekes amour, sylvester stallone
+amour, argo
 Winner:
-2013 amour
+ s
 
 best performance by an actress in a supporting role in a motion picture
 Presenter(s):
@@ -141,23 +141,23 @@ best screenplay - motion picture
 Presenter(s):
 amanda
 Nominees:
-quentin tarantino, nbc django, amanda, robert pattinson, badass mofo
+argo, skyfall, lincoln, zero dark thirty, les misérables, hatfields & mccoys, ben affleck on the meaning of life, django unchained
 Winner:
-quentin tarantino
+django
 
 best original score - motion picture
 Presenter(s):
-jason statham, jennifer lopez
+jennifer lopez, jason statham
 Nominees:
-joel zimmerman, mychael dana, mychael danna, michael danna
+skyfall
 Winner:
-mychael danna
+pi
 
 best original song - motion picture
 Presenter(s):
 
 Nominees:
-adele, taylor, paul epworth #, yay rtwsjspeakeasy, woop woop
+skyfall
 Winner:
 skyfall
 
@@ -165,7 +165,7 @@ best television series - drama
 Presenter(s):
 lea michele, nathan fillion
 Nominees:
-lewis lewis_damian, claire danes, damian lewis, yeaay  , el primer de la nit
+homeland
 Winner:
 homeland
 
@@ -189,7 +189,7 @@ best television series - comedy or musical
 Presenter(s):
 jimmy fallon, jay leno
 Nominees:
-don cheadle, lena dunham, cheadle iamdoncheadle  house, jim parsons, yesnbc iamdoncheadle
+
 Winner:
 girls
 
@@ -211,19 +211,19 @@ don cheadle
 
 best mini-series or motion picture made for television
 Presenter(s):
-dennis quaid, maggie smith
+kerry washington, maggie smith
 Nominees:
-ed harris, kevin costner, lo lleva, maggie smith
+hatfields & mccoys
 Winner:
 game change
 
 best performance by an actress in a mini-series or motion picture made for television
 Presenter(s):
-kerry washington, dennis quaid
+dennis quaid, kerry washington
 Nominees:
 maggie smith
 Winner:
-perez julianne moore
+julianna moore
 
 best performance by an actor in a mini-series or motion picture made for television
 Presenter(s):
@@ -235,7 +235,7 @@ kevin costner
 
 best performance by an actress in a supporting role in a series, mini-series or motion picture made for television
 Presenter(s):
-kerry washington, dennis quaid
+dennis quaid, kerry washington
 Nominees:
 maggie smith
 Winner:
