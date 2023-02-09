@@ -1,12 +1,8 @@
 '''Version 0.35'''
 import re
-import requests
-from bs4 import BeautifulSoup as BS
 import json
 import nltk
 import spacy
-from spacy import displacy
-import pandas as pd
 nltk.download('vader_lexicon')
 from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
@@ -243,7 +239,7 @@ def get_nominees(year):
     # Your code here
     data = load_data(year)
     nominees = {}
-    ppl_lst= ['actor','actress','director','producer','cecile','award','score','screenplay']
+    ppl_lst= ['actor','actress','director','producer','cecile','award']
     nouns= ['NN','NNS','NNP','NNPS']
     assigned=set()
     for a in OFFICIAL_AWARDS_1315:
@@ -273,7 +269,7 @@ def get_nominees(year):
             if (t.startswith('rt')):
                 continue
             # if name is found with award, append name to list of potential nominees
-            if any(ppl in a for ppl in ppl_lst):
+            if any([ppl in a for ppl in ppl_lst]):
                 if (all([x in t for x in clean_award_name])):
                     names = nlp(t)
                     for name in names.ents:
@@ -329,25 +325,24 @@ def get_nominees(year):
                     items = ia.search_movie(mov[0])
                     id=items[0].movieID
                     if items != []:
-                        title= items[0]['title']
-                        year = items[0].get('year')
+                        title= items[0]['title'].lower()
+                        mov_year = items[0].get('year')
                         genres= ia.get_movie(id).get('genres')
-                        type= ia.get_movie(id).get('kind')
                         if clean_award_name[-1] in ['drama','musical']:
                             if genres != None and clean_award_name[-1].title() in genres:
 
                                 #can check genre
-                                if year == 2012 or year == 2011:
+                                if mov_year == (int(year)-1) or mov_year == (int(year)-2):
                                     if title not in done:
                                         good_nominees.append([title,mov[1]])
                                         done[title]= len(good_nominees)-1
                                     else:
                                         good_nominees[done[title]][1] += mov[1]
                         else:
-                            if year == 2012 or year == 2011:
-                                if title.lower() not in done:
-                                    good_nominees.append([title.lower(),mov[1]])
-                                    done[title,lower()]= len(good_nominees)-1
+                            if mov_year == (int(year)-1) or mov_year == (int(year)-2):
+                                if title not in done:
+                                    good_nominees.append([title,mov[1]])
+                                    done[title]= len(good_nominees)-1
                                 else:
                                     good_nominees[done[title]][1] += mov[1]
             good_nominees= remove_count(good_nominees)
@@ -379,7 +374,7 @@ def get_winner(year):
     cands = {}
     useless_words = [' rt ', 'rt ', ' rt', 'http']
     stop_words = ['wish', 'hope', 'deserves', 'yay', 'woah', 'wow']
-    people_words = ['actor', 'actress', 'director', 'award', 'screenplay', 'score']
+    people_words = ['actor', 'actress', 'director', 'award']
     #array of words not commonly used (or provides no semantic value) in tweets when discussing awards
     award_useless_words = ['performance', 'by', 'in', 'made', 'for', 'role', 'original', 'an']
     for a in OFFICIAL_AWARDS_1315:
