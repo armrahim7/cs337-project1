@@ -13,6 +13,8 @@ sia = SentimentIntensityAnalyzer()
 nlp = spacy.load('en_core_web_lg')
 NER = spacy.load("en_core_web_sm")
 import time
+import imdb
+ia = imdb.IMDb()
 
 nominees_per_award = 5
 award_count = 26
@@ -233,6 +235,7 @@ def get_awards(year):
             awards.append(a)
     return awards
 
+
 def get_nominees(year):
     '''Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings. Do NOT change
@@ -240,6 +243,9 @@ def get_nominees(year):
     # Your code here
     data = load_data(year)
     nominees = {}
+    ppl_lst= ['actor','actress','director','producer','cecile','award','score','screenplay']
+    nouns= ['NN','NNS','NNP','NNPS']
+    assigned=set()
     for a in OFFICIAL_AWARDS_1315:
         # remove punctuation from award name
         award_re = re.sub(r'/', ' ', a)
@@ -252,9 +258,11 @@ def get_nominees(year):
         for word in award_name[0]:
             if word != "in" and word != "or" and word != "a" and word != "an" and word != "performance" and word != "by" and word != "made" and word != "for" and word != "any":
                 clean_award_name.append(word)
+        awrd= set(clean_award_name)
         # list of potential nominees
         pot_nominees = []
         for t in data:
+            og_t=t
             t = t.lower()
             t = re.sub(r'/', ' ', t)
             t = re.sub(r'[^\w\s#]', '', t)
@@ -265,11 +273,36 @@ def get_nominees(year):
             if (t.startswith('rt')):
                 continue
             # if name is found with award, append name to list of potential nominees
-            if (all([x in t for x in clean_award_name])):
-                names = nlp(t)
-                for name in names.ents:
-                    if name.label_ == 'PERSON':
-                        pot_nominees.append(name.text)
+            if any(ppl in a for ppl in ppl_lst):
+                if (all([x in t for x in clean_award_name])):
+                    names = nlp(t)
+                    for name in names.ents:
+                        if name.label_ == 'PERSON':
+                            pot_nominees.append(name.text)
+            else:
+                if (all([x in t for x in clean_award_name])):
+                    pot = nlp(og_t)
+                    for word in pot:
+                        for ent in pot.ents:
+                            if word.text == ent.text:
+                                if word.tag_ in nouns  and ent.label_ != 'PERSON':
+                                    pot_nominees.append(word.text)
+                else:
+                    t1=t.split(' ')
+                    t_s= set(t1)
+                    matches=len(t_s.intersection(awrd))
+                    if matches > 0 and matches/len(awrd) > .7:
+                        pot = nlp(og_t)
+                        for word in pot:
+                            for ent in pot.ents:
+                                if word.text == ent.text:
+                                    if word.tag_ in nouns  and ent.label_ != 'PERSON':
+                                        pot_nominees.append(word.text)
+
+   
+    
+
+
         # list of named entities found paired with how many instances of them were found
         counted_nominees = []
         for n in pot_nominees:
@@ -286,20 +319,54 @@ def get_nominees(year):
         joined_nominees = join_names(single_nominees)
         joined_nominees = remove_misses(joined_nominees)
         # get the 5 most mentioned people
-        limited_nominees = []
-        for n in joined_nominees:
-            if len(limited_nominees) < nominees_per_award:
-                limited_nominees.append(n)
-            else:
-                limited_nominees.sort(key=min_appearances)
-                if limited_nominees[0][1] < n[1]:
-                    limited_nominees[0] = n
-        # list is in increasing order of most mentioned, so reverse list
-        limited_nominees.reverse()
-        # remove count (not necessary during testing)
-        limited_nominees = remove_count(limited_nominees)
-        # append pair of award and nominees to the output
-        nominees[a]= limited_nominees
+        if not any(ppl in a for ppl in ppl_lst):
+            good_nominees = []
+            joined_nominees=sorted(joined_nominees, key = lambda x: x[1],reverse = True)
+            done={}
+            for mov in joined_nominees:
+                if mov[1] != 1 :
+                #if not'@'on mo and mov and 'RT' in mov and '#' not in mov:
+                    items = ia.search_movie(mov[0])
+                    id=items[0].movieID
+                    if items != []:
+                        title= items[0]['title']
+                        year = items[0].get('year')
+                        genres= ia.get_movie(id).get('genres')
+                        type= ia.get_movie(id).get('kind')
+                        if clean_award_name[-1] in ['drama','musical']:
+                            if genres != None and clean_award_name[-1].title() in genres:
+
+                                #can check genre
+                                if year == 2012 or year == 2011:
+                                    if title not in done:
+                                        good_nominees.append([title,mov[1]])
+                                        done[title]= len(good_nominees)-1
+                                    else:
+                                        good_nominees[done[title]][1] += mov[1]
+                        else:
+                            if year == 2012 or year == 2011:
+                                if title.lower() not in done:
+                                    good_nominees.append([title.lower(),mov[1]])
+                                    done[title,lower()]= len(good_nominees)-1
+                                else:
+                                    good_nominees[done[title]][1] += mov[1]
+            good_nominees= remove_count(good_nominees)
+            nominees[a]= good_nominees
+        else:
+            limited_nominees = []
+            for n in joined_nominees:
+                if len(limited_nominees) < nominees_per_award:
+                    limited_nominees.append(n)
+                else:
+                    limited_nominees.sort(key=min_appearances)
+                    if limited_nominees[0][1] < n[1]:
+                        limited_nominees[0] = n
+            # list is in increasing order of most mentioned, so reverse list
+            limited_nominees.reverse()
+            # remove count (not necessary during testing)
+            limited_nominees = remove_count(limited_nominees)
+            # append pair of award and nominees to the output
+            nominees[a]= limited_nominees
     return nominees
 
 def get_winner(year):
