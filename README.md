@@ -9,7 +9,7 @@ Group Members:
 3. Run python -m spacy download en_core_web_sm
 4. Run gg_api.py
 # Additional Notes:
-The human-readable .txt file also outputs from gg_api.  
+The human-readable .txt file outputs from gg_api.  
 The .txt file contains all the required goals, as well as the additional goals of getting the sentiment towards the hosts, the best and worst dressed attendee, the most popular parties, and the sentiment towards those parties.  
 Runtime of gg_api was 505 seconds (8.4 minutes) on a Dell XPS 13 (Intel i7)  
 Repo: https://github.com/armrahim7/cs337-project1
